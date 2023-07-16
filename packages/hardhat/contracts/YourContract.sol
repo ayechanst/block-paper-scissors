@@ -14,74 +14,84 @@ import "hardhat/console.sol";
  */
 contract YourContract {
 	// State Variables
-	address public immutable owner;
-	string public greeting = "Building Unstoppable Apps!!!";
-	bool public premium = false;
-	uint256 public totalCounter = 0;
-	mapping(address => uint) public userGreetingCounter;
+  string public outcome;
+  address public immutable owner;
+  uint256 public playerChoice;
+  uint256 public opChoice;
+  Commitment[] private commitments;
 
-	// Events: a way to emit log statements from smart contract that can be listened to by external parties
-	event GreetingChange(
-		address indexed greetingSetter,
-		string newGreeting,
-		bool premium,
-		uint256 value
-	);
-
-	// Constructor: Called once on contract deployment
 	// Check packages/hardhat/deploy/00_deploy_your_contract.ts
 	constructor(address _owner) {
 		owner = _owner;
 	}
 
-	// Modifier: used to define a set of rules that must be met before or after a function is executed
-	// Check the withdraw() function
-	modifier isOwner() {
-		// msg.sender: predefined variable that represents address of the account that called the current function
-		require(msg.sender == owner, "Not the Owner");
-		_;
-	}
+  struct Commitment {
+    address senderAddress;
+    string item;
+    string salt;
+    bytes32 saltedHash;
+  }
 
-	/**
-	 * Function that allows anyone to change the state variable "greeting" of the contract and increase the counters
-	 *
-	 * @param _newGreeting (string memory) - new greeting to save on the contract
-	 */
-	function setGreeting(string memory _newGreeting) public payable {
-		// Print data to the hardhat chain console. Remove when deploying to a live network.
-		console.log(
-			"Setting new greeting '%s' from %s",
-			_newGreeting,
-			msg.sender
-		);
+  function commitItem(string memory item, string memory salt) public {
+    bytes32 saltedHash = keccak256(abi.encodePacked(item, salt));
+    Commitment memory newCommit = Commitment(msg.sender, item, salt, saltedHash);
+    commitments.push(newCommit);
+  }
 
-		// Change state variables
-		greeting = _newGreeting;
-		totalCounter += 1;
-		userGreetingCounter[msg.sender] += 1;
+  function playGame() public {
 
-		// msg.value: built-in global variable that represents the amount of ether sent with the transaction
-		if (msg.value > 0) {
-			premium = true;
-		} else {
-			premium = false;
-		}
+    Commitment memory playerOne = commitments[0];
+    Commitment memory playerTwo = commitments[1];
 
-		// emit: keyword used to trigger an event
-		emit GreetingChange(msg.sender, _newGreeting, msg.value > 0, 0);
-	}
+    if (playerOne.saltedHash == keccak256(abi.encodePacked('rock', playerOne.salt))) {
+      playerChoice = 1;
+    } else if (playerOne.saltedHash == keccak256(abi.encodePacked('paper', playerOne.salt))) {
+      playerChoice = 2;
+    } else if (playerOne.saltedHash == keccak256(abi.encodePacked('scissors', playerOne.salt))) {
+      playerChoice = 3;
+    } else {
+      playerChoice = 0;
+    }
 
-	/**
-	 * Function that allows the owner to withdraw all the Ether in the contract
-	 * The function can only be called by the owner of the contract as defined by the isOwner modifier
-	 */
-	function withdraw() public isOwner {
-		(bool success, ) = owner.call{ value: address(this).balance }("");
-		require(success, "Failed to send Ether");
-	}
+    if (playerTwo.saltedHash == keccak256(abi.encodePacked('rock', playerTwo.salt))) {
+      opChoice = 1;
+    } else if (playerTwo.saltedHash == keccak256(abi.encodePacked('paper', playerTwo.salt))) {
+      opChoice = 2;
+    } else if (playerTwo.saltedHash == keccak256(abi.encodePacked('scissors', playerTwo.salt))) {
+      opChoice = 3;
+    } else {
+      opChoice = 0;
+    }
 
-	/**
-	 * Function that allows the contract to receive ETH
-	 */
-	receive() external payable {}
+    if (playerChoice == opChoice) {
+      outcome = 'tie';
+    } else if (playerChoice == 1) {
+      if (opChoice == 2) {
+        outcome = 'the ops have won';
+      } else {
+        outcome = 'you win';
+      }
+    } else if (playerChoice == 2) {
+      if (opChoice == 3) {
+        outcome = 'ops wins';
+      } else {
+        outcome = 'you have defeated the ops';
+      }
+    } else if (playerChoice == 3) {
+      if (opChoice == 1) {
+        outcome = 'ops won';
+      } else {
+        outcome = 'you win G';
+      }
+    }
+
+  }
+
+
+  function clearArray() public {
+    delete commitments;
+  }
+
+
+
 }
