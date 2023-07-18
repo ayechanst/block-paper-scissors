@@ -41,34 +41,39 @@ struct GameStruct {
 }
 
 // maps the Game address to the game's data
-mapping(address => GameStruct) public games;
+  mapping(address => GameStruct) public games;
 // maps current player to their current 'active' game
-mapping(address => address) public
+  mapping(address => address) public activeGame;
 
-	// State Variables
-  string public outcome;
-  address public immutable owner;
-  uint256 public playerChoice;
-  uint256 public opChoice;
-  Commitment[] private commitments;
 
 	// Check packages/hardhat/deploy/00_deploy_your_contract.ts
 	constructor(address _owner) {
 		owner = _owner;
 	}
 
-  struct Commitment {
-    address senderAddress;
-    string item;
-    string salt;
-    bytes32 saltedHash;
+  modifier validGameState(address gameHash, GameState gameState) {
+    require(games == true) {
+      'the game has not begun'
+    }
   }
 
-  function commitItem(string memory item, string memory salt) public {
-    bytes32 saltedHash = keccak256(abi.encodePacked(item, salt));
-    Commitment memory newCommit = Commitment(msg.sender, item, salt, saltedHash);
-    commitments.push(newCommit);
+  function createGame(address otherPlayer) public returns (address) {
+    address gameHash = generateGameHash();
+    require(!games[gameHash].initialized, "This game code already exists, try again")
+    require(msg.sender != otherPlayer, "Invited players must have a different address")
+    games[gameHash].initialized = true;
+    games[gameHash].player1 = msg.sender;
+    games[gameHash].player2 = otherPlayer;
+    games[gameHash].gameState = GameState.JoinPhase;
+    activeGame[msg.sender] = gameHash;
+    return gameHash;
   }
+
+  function generateGameHash() public view returns (address) {
+    bytes32 prevHash = blockhash(block.number - 1);
+    return address(bytes20(keccak256(abi.encode(msg.sender, prevHash))));
+  }
+
 
   function playGame() public {
 
