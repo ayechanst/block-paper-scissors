@@ -5,73 +5,17 @@ const contracts = {
       name: "localhost",
       contracts: {
         YourContract: {
-          address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+          address: "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
           abi: [
             {
               inputs: [
                 {
                   internalType: "address",
-                  name: "_owner",
+                  name: "",
                   type: "address",
                 },
               ],
-              stateMutability: "nonpayable",
-              type: "constructor",
-            },
-            {
-              inputs: [],
-              name: "clearArray",
-              outputs: [],
-              stateMutability: "nonpayable",
-              type: "function",
-            },
-            {
-              inputs: [
-                {
-                  internalType: "string",
-                  name: "item",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "salt",
-                  type: "string",
-                },
-              ],
-              name: "commitItem",
-              outputs: [],
-              stateMutability: "nonpayable",
-              type: "function",
-            },
-            {
-              inputs: [],
-              name: "opChoice",
-              outputs: [
-                {
-                  internalType: "uint256",
-                  name: "",
-                  type: "uint256",
-                },
-              ],
-              stateMutability: "view",
-              type: "function",
-            },
-            {
-              inputs: [],
-              name: "outcome",
-              outputs: [
-                {
-                  internalType: "string",
-                  name: "",
-                  type: "string",
-                },
-              ],
-              stateMutability: "view",
-              type: "function",
-            },
-            {
-              inputs: [],
-              name: "owner",
+              name: "activeGame",
               outputs: [
                 {
                   internalType: "address",
@@ -83,23 +27,183 @@ const contracts = {
               type: "function",
             },
             {
-              inputs: [],
-              name: "playGame",
-              outputs: [],
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "otherPlayer",
+                  type: "address",
+                },
+              ],
+              name: "createGame",
+              outputs: [
+                {
+                  internalType: "address",
+                  name: "",
+                  type: "address",
+                },
+              ],
               stateMutability: "nonpayable",
               type: "function",
             },
             {
-              inputs: [],
-              name: "playerChoice",
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "",
+                  type: "address",
+                },
+              ],
+              name: "games",
               outputs: [
                 {
+                  internalType: "bool",
+                  name: "initialized",
+                  type: "bool",
+                },
+                {
+                  internalType: "address",
+                  name: "player1",
+                  type: "address",
+                },
+                {
+                  internalType: "address",
+                  name: "player2",
+                  type: "address",
+                },
+                {
+                  internalType: "enum YourContract.GameState",
+                  name: "gameState",
+                  type: "uint8",
+                },
+                {
+                  internalType: "bytes32",
+                  name: "commit1",
+                  type: "bytes32",
+                },
+                {
+                  internalType: "bytes32",
+                  name: "commit2",
+                  type: "bytes32",
+                },
+                {
+                  internalType: "bytes32",
+                  name: "reveal1",
+                  type: "bytes32",
+                },
+                {
+                  internalType: "bytes32",
+                  name: "reveal2",
+                  type: "bytes32",
+                },
+                {
                   internalType: "uint256",
-                  name: "",
+                  name: "revealDeadline",
                   type: "uint256",
+                },
+                {
+                  internalType: "enum YourContract.GameResult",
+                  name: "gameResult",
+                  type: "uint8",
                 },
               ],
               stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "generateGameHash",
+              outputs: [
+                {
+                  internalType: "address",
+                  name: "",
+                  type: "address",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "player",
+                  type: "address",
+                },
+              ],
+              name: "getActiveGameData",
+              outputs: [
+                {
+                  components: [
+                    {
+                      internalType: "bool",
+                      name: "initialized",
+                      type: "bool",
+                    },
+                    {
+                      internalType: "address",
+                      name: "player1",
+                      type: "address",
+                    },
+                    {
+                      internalType: "address",
+                      name: "player2",
+                      type: "address",
+                    },
+                    {
+                      internalType: "enum YourContract.GameState",
+                      name: "gameState",
+                      type: "uint8",
+                    },
+                    {
+                      internalType: "bytes32",
+                      name: "commit1",
+                      type: "bytes32",
+                    },
+                    {
+                      internalType: "bytes32",
+                      name: "commit2",
+                      type: "bytes32",
+                    },
+                    {
+                      internalType: "bytes32",
+                      name: "reveal1",
+                      type: "bytes32",
+                    },
+                    {
+                      internalType: "bytes32",
+                      name: "reveal2",
+                      type: "bytes32",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "revealDeadline",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "enum YourContract.GameResult",
+                      name: "gameResult",
+                      type: "uint8",
+                    },
+                  ],
+                  internalType: "struct YourContract.GameStruct",
+                  name: "",
+                  type: "tuple",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "gameHash",
+                  type: "address",
+                },
+              ],
+              name: "joinGame",
+              outputs: [],
+              stateMutability: "nonpayable",
               type: "function",
             },
           ],

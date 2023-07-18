@@ -47,27 +47,21 @@ struct GameStruct {
 
 
 	// Check packages/hardhat/deploy/00_deploy_your_contract.ts
-	constructor(address _owner) {
-		owner = _owner;
-	}
+//	constructor() {}
 
-  modifier validGameState(address gameHash, GameState gameState) {
-    require(games[gameHash].initilaized == true), "the game has not been initilaized");
-    require(games[gameHash].player1 == msg.sender || games[gameHash].player2 == msg.sender, "player is not in the game");
-    require(games[gameHash].gameState == gameState, "game is not in correct phase");
-    _;
-  }
-
-  function generateGameHash() public view returns (address) {
-    bytes32 prevHash = blockhash(block.number - 1);
-    return address(bytes20(keccak256(abi.encode(msg.sender, prevHash))));
-  }
+  //modifier validGameState(address gameHash, GameState gameState) {
+   // require(games[gameHash].initialized == true, "game code does not exist");
+   // require(games[gameHash].player1 == msg.sender || games[gameHash].player2 == msg.sender, "player is not in the game");
+   // require(games[gameHash].gameState == gameState, "game is not in correct phase");
+  //  _;
+ // }
 
   function createGame(address otherPlayer) public returns (address) {
     address gameHash = generateGameHash();
     require(!games[gameHash].initialized, "This game code already exists, try again");
     require(msg.sender != otherPlayer, "Invited players must have a different address");
     games[gameHash].initialized = true;
+    require(games[gameHash].initialized == true, "initialized has shat itself again");
     games[gameHash].player1 = msg.sender;
     games[gameHash].player2 = otherPlayer;
     games[gameHash].gameState = GameState.JoinPhase;
@@ -75,72 +69,24 @@ struct GameStruct {
     return gameHash;
   }
 
-  function joinGame(address gameHash) public ValidGameState(gameHash, GameState.JoinPhase) {
+  function joinGame(address gameHash) public {
     games[gameHash].gameState = GameState.CommitPhase;
     activeGame[msg.sender] = gameHash;
+  }
+
+//  function joinGame(address gameHash) public validGameState(gameHash, GameState.JoinPhase) {
+//    games[gameHash].gameState = GameState.CommitPhase;
+//    activeGame[msg.sender] = gameHash;
+//  }
+
+  function generateGameHash() public view returns (address) {
+    bytes32 prevHash = blockhash(block.number - 1);
+    return address(bytes20(keccak256(abi.encode(msg.sender, prevHash))));
   }
 
   function getActiveGameData(address player) public view returns (GameStruct memory) {
     address gameHash = activeGame[player];
     return games[gameHash];
   }
-
-
-
-  function playGame() public {
-
-    Commitment memory playerOne = commitments[0];
-    Commitment memory playerTwo = commitments[1];
-
-    if (playerOne.saltedHash == keccak256(abi.encodePacked('rock', playerOne.salt))) {
-      playerChoice = 1;
-    } else if (playerOne.saltedHash == keccak256(abi.encodePacked('paper', playerOne.salt))) {
-      playerChoice = 2;
-    } else if (playerOne.saltedHash == keccak256(abi.encodePacked('scissors', playerOne.salt))) {
-      playerChoice = 3;
-    } else {
-      playerChoice = 0;
-    }
-
-    if (playerTwo.saltedHash == keccak256(abi.encodePacked('rock', playerTwo.salt))) {
-      opChoice = 1;
-    } else if (playerTwo.saltedHash == keccak256(abi.encodePacked('paper', playerTwo.salt))) {
-      opChoice = 2;
-    } else if (playerTwo.saltedHash == keccak256(abi.encodePacked('scissors', playerTwo.salt))) {
-      opChoice = 3;
-    } else {
-      opChoice = 0;
-    }
-
-    if (playerChoice == opChoice) {
-      outcome = 'tie';
-    } else if (playerChoice == 1) {
-      if (opChoice == 2) {
-        outcome = 'the ops have won';
-      } else {
-        outcome = 'you win';
-      }
-    } else if (playerChoice == 2) {
-      if (opChoice == 3) {
-        outcome = 'ops wins';
-      } else {
-        outcome = 'you have defeated the ops';
-      }
-    } else if (playerChoice == 3) {
-      if (opChoice == 1) {
-        outcome = 'ops won';
-      } else {
-        outcome = 'you win G';
-      }
-    }
-
-  }
-
-
-  function clearArray() public {
-    delete commitments;
-  }
-
-
 
 }
