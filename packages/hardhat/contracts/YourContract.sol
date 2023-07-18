@@ -40,6 +40,11 @@ struct GameStruct {
   GameResult gameResult;
 }
 
+// maps the Game address to the game's data
+mapping(address => GameStruct) public games;
+// maps current player to their current 'active' game
+mapping(address => address) public
+
 	// State Variables
   string public outcome;
   address public immutable owner;
