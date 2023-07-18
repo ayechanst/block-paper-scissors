@@ -1,5 +1,5 @@
 //import Link from "next/link";
-import { Button } from "../components/Button";
+import { RockButton } from "../components/RockButton";
 import type { NextPage } from "next";
 
 //import { BugAntIcon, MagnifyingGlassIcon, SparklesIcon } from "@heroicons/react/24/outline";
@@ -8,8 +8,7 @@ import type { NextPage } from "next";
 const Home: NextPage = () => {
   return (
     <>
-      <Button />
-      <button>Rock</button>
+      <RockButton />
       <button>Paper</button>
       <button>Scissors</button>
     </>

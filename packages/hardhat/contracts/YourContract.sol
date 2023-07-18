@@ -13,6 +13,33 @@ import "hardhat/console.sol";
  * @author BuidlGuidl
  */
 contract YourContract {
+
+enum GameState {
+  JoinPhase,
+  CommitPhase,
+  RevealPhase,
+  ResultsPhase
+}
+
+enum GameResult {
+  P1Win,
+  P2Win,
+  Draw
+}
+
+struct GameStruct {
+  bool initialized;
+  address player1;
+  address player2;
+  GameState gameState;
+  bytes32 commit1;
+  bytes32 commit2;
+  bytes32 reveal1;
+  bytes32 reveal2;
+  uint256 revealDeadline;
+  GameResult gameResult;
+}
+
 	// State Variables
   string public outcome;
   address public immutable owner;
