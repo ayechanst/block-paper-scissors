@@ -52,15 +52,21 @@ struct GameStruct {
 	}
 
   modifier validGameState(address gameHash, GameState gameState) {
-    require(games == true) {
-      'the game has not begun'
-    }
+    require(games[gameHash].initilaized == true), "the game has not been initilaized");
+    require(games[gameHash].player1 == msg.sender || games[gameHash].player2 == msg.sender, "player is not in the game");
+    require(games[gameHash].gameState == gameState, "game is not in correct phase");
+    _;
+  }
+
+  function generateGameHash() public view returns (address) {
+    bytes32 prevHash = blockhash(block.number - 1);
+    return address(bytes20(keccak256(abi.encode(msg.sender, prevHash))));
   }
 
   function createGame(address otherPlayer) public returns (address) {
     address gameHash = generateGameHash();
-    require(!games[gameHash].initialized, "This game code already exists, try again")
-    require(msg.sender != otherPlayer, "Invited players must have a different address")
+    require(!games[gameHash].initialized, "This game code already exists, try again");
+    require(msg.sender != otherPlayer, "Invited players must have a different address");
     games[gameHash].initialized = true;
     games[gameHash].player1 = msg.sender;
     games[gameHash].player2 = otherPlayer;
@@ -69,10 +75,16 @@ struct GameStruct {
     return gameHash;
   }
 
-  function generateGameHash() public view returns (address) {
-    bytes32 prevHash = blockhash(block.number - 1);
-    return address(bytes20(keccak256(abi.encode(msg.sender, prevHash))));
+  function joinGame(address gameHash) public ValidGameState(gameHash, GameState.JoinPhase) {
+    games[gameHash].gameState = GameState.CommitPhase;
+    activeGame[msg.sender] = gameHash;
   }
+
+  function getActiveGameData(address player) public view returns (GameStruct memory) {
+    address gameHash = activeGame[player];
+    return games[gameHash];
+  }
+
 
 
   function playGame() public {
