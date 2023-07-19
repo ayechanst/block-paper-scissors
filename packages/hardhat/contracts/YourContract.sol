@@ -115,6 +115,10 @@ struct GameStruct {
       games[gameHash].gameState = GameState.RevealPhase;
     }
 
+    function revealString(string memory salt) public validGameState(activeGame[msg.sender], GameState.RevealPhase) {
+      address gameHash = activeGame[msg.sender];
+    }
+
   }
 
 
