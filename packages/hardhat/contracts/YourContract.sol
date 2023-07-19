@@ -95,6 +95,9 @@ struct GameStruct {
 
     address gameHash = activeGame[msg.sender];
     bytes32 unsaltedChoice = keccak256(abi.encodePacked(choice));
+    bytes32 rockHash = keccak256(abi.encodePacked('rock'));
+    bytes32 paperHash = keccak256(abi.encodePacked('paper'));
+    bytes32 scissorsHash = keccak256(abi.encodePacked('scissors'));
 
     require(unsaltedChoice == rockHash || unsaltedChoice == paperHash || unsaltedChoice == scissorsHash,
            "please select either rock, paper, or scissors");
@@ -108,9 +111,10 @@ struct GameStruct {
       games[gameHash].commit2 = commitHash;
     }
 
-    if (games[gameHash].commit1 != 0 || games[gameHash].commit2 != 0) {
+    if (games[gameHash].commit1 != 0 && games[gameHash].commit2 != 0) {
       games[gameHash].gameState = GameState.RevealPhase;
     }
+
   }
 
 
