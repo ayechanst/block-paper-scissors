@@ -29,6 +29,7 @@ enum GameResult {
 
 struct GameStruct {
   bool initialized;
+  address gameHash;
   address player1;
   address player2;
   GameState gameState;
@@ -45,41 +46,38 @@ struct GameStruct {
 // maps current player to their current 'active' game
   mapping(address => address) public activeGame;
 
-
-	// Check packages/hardhat/deploy/00_deploy_your_contract.ts
-//	constructor() {}
-
-  //modifier validGameState(address gameHash, GameState gameState) {
-   // require(games[gameHash].initialized == true, "game code does not exist");
-   // require(games[gameHash].player1 == msg.sender || games[gameHash].player2 == msg.sender, "player is not in the game");
-   // require(games[gameHash].gameState == gameState, "game is not in correct phase");
-  //  _;
- // }
+  modifier validGameState(address gameHash, GameState gameState) {
+    require(games[gameHash].initialized == true, "game code does not exist");
+    require(games[gameHash].player1 == msg.sender || games[gameHash].player2 == msg.sender, "player is not in the game");
+    require(games[gameHash].gameState == gameState, "game is not in correct phase");
+    _;
+  }
 
   function createGame(address otherPlayer) public returns (address) {
     address gameHash = generateGameHash();
     require(!games[gameHash].initialized, "This game code already exists, try again");
     require(msg.sender != otherPlayer, "Invited players must have a different address");
+    createGameStruct(gameHash);
     games[gameHash].initialized = true;
-    require(games[gameHash].initialized == true, "initialized has shat itself again");
     games[gameHash].player1 = msg.sender;
     games[gameHash].player2 = otherPlayer;
     games[gameHash].gameState = GameState.JoinPhase;
     activeGame[msg.sender] = gameHash;
-    return gameHash;
+    return games[gameHash].gameHash;
   }
 
-  function joinGame(address gameHash) public {
+  function joinGame(address gameHash) public validGameState(gameHash, GameState.JoinPhase) {
     games[gameHash].gameState = GameState.CommitPhase;
     activeGame[msg.sender] = gameHash;
   }
 
-//  function joinGame(address gameHash) public validGameState(gameHash, GameState.JoinPhase) {
-//    games[gameHash].gameState = GameState.CommitPhase;
-//    activeGame[msg.sender] = gameHash;
-//  }
+  function createGameStruct(address gameHash) private {
+    GameStruct memory newGameStruct;
+    newGameStruct.gameHash = gameHash;
+    games[gameHash] = newGameStruct;
+  }
 
-  function generateGameHash() public view returns (address) {
+  function generateGameHash() private view returns (address) {
     bytes32 prevHash = blockhash(block.number - 1);
     return address(bytes20(keccak256(abi.encode(msg.sender, prevHash))));
   }

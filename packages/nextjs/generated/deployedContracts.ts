@@ -5,7 +5,7 @@ const contracts = {
       name: "localhost",
       contracts: {
         YourContract: {
-          address: "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+          address: "0x7a2088a1bFc9d81c55368AE168C2C02570cB814F",
           abi: [
             {
               inputs: [
@@ -62,6 +62,11 @@ const contracts = {
                 },
                 {
                   internalType: "address",
+                  name: "gameHash",
+                  type: "address",
+                },
+                {
+                  internalType: "address",
                   name: "player1",
                   type: "address",
                 },
@@ -110,19 +115,6 @@ const contracts = {
               type: "function",
             },
             {
-              inputs: [],
-              name: "generateGameHash",
-              outputs: [
-                {
-                  internalType: "address",
-                  name: "",
-                  type: "address",
-                },
-              ],
-              stateMutability: "view",
-              type: "function",
-            },
-            {
               inputs: [
                 {
                   internalType: "address",
@@ -138,6 +130,11 @@ const contracts = {
                       internalType: "bool",
                       name: "initialized",
                       type: "bool",
+                    },
+                    {
+                      internalType: "address",
+                      name: "gameHash",
+                      type: "address",
                     },
                     {
                       internalType: "address",
