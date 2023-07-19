@@ -5,7 +5,7 @@ const contracts = {
       name: "localhost",
       contracts: {
         YourContract: {
-          address: "0x7a2088a1bFc9d81c55368AE168C2C02570cB814F",
+          address: "0xE6E340D132b5f46d1e472DebcD681B2aBc16e57E",
           abi: [
             {
               inputs: [
@@ -24,6 +24,24 @@ const contracts = {
                 },
               ],
               stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "string",
+                  name: "choice",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "salt",
+                  type: "string",
+                },
+              ],
+              name: "commit",
+              outputs: [],
+              stateMutability: "nonpayable",
               type: "function",
             },
             {

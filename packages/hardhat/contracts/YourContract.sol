@@ -41,6 +41,8 @@ struct GameStruct {
   GameResult gameResult;
 }
 
+  address joinCode;
+
 // maps the Game address to the game's data
   mapping(address => GameStruct) public games;
 // maps current player to their current 'active' game
@@ -66,6 +68,7 @@ struct GameStruct {
     return games[gameHash].gameHash;
   }
 
+
   function joinGame(address gameHash) public validGameState(gameHash, GameState.JoinPhase) {
     games[gameHash].gameState = GameState.CommitPhase;
     activeGame[msg.sender] = gameHash;
@@ -86,5 +89,38 @@ struct GameStruct {
     address gameHash = activeGame[player];
     return games[gameHash];
   }
+
+  function commit(string memory choice, string memory salt) public
+    validGameState(activeGame[msg.sender], GameState.CommitPhase) {
+
+    address gameHash = activeGame[msg.sender];
+    bytes32 unsaltedChoice = keccak256(abi.encodePacked(choice));
+
+    require(unsaltedChoice == rockHash || unsaltedChoice == paperHash || unsaltedChoice == scissorsHash,
+           "please select either rock, paper, or scissors");
+
+    bytes32 commitHash = keccak256(abi.encodePacked(choice, salt));
+    bool isPlayer1 = games[gameHash].player1 == msg.sender;
+
+    if (isPlayer1) {
+      games[gameHash].commit1 = commitHash;
+    } else {
+      games[gameHash].commit2 = commitHash;
+    }
+
+    if (games[gameHash].commit1 != 0 || games[gameHash].commit2 != 0) {
+      games[gameHash].gameState = GameState.RevealPhase;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
 
 }
