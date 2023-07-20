@@ -115,13 +115,13 @@ struct GameStruct {
       games[gameHash].gameState = GameState.RevealPhase;
     }
 
-    function revealString(string memory salt) public validGameState(activeGame[msg.sender], GameState.RevealPhase) {
+    function reveal(string memory salt) public validGameState(activeGame[msg.sender], GameState.RevealPhase) {
       address gameHash = activeGame[msg.sender];
       bool isPlayer1 = games[gameHash].player1 == msg.sender;
       if (isPlayer1) {
-        require(gameHash[msg.sender].reveal1 == 0, "already revealed")
+        require(gameHash[msg.sender].reveal1 == 0, "already revealed");
       } else {
-        require(gameHash[msg.sender].reveal2 == 0, "already revealed")
+        require(gameHash[msg.sender].reveal2 == 0, "already revealed");
       }
 
       bytes32 verificationHashRock = keccak256(abi.encodePacked("rock", salt));
@@ -154,15 +154,36 @@ struct GameStruct {
     }
 
     function determineWinner(bytes32 revealP1, bytes32 revealP2) public view returns (GameResults) {
-
+      if (revealP1 != 0 || revealP2 != 0) {
+        if (revealP1 == revealP2) {
+          return GameResults.Draw;
+        } else if (revealP1 == rockHash) {
+          if (revealP2 == paperHash) {
+            return GameResults.P2Win;
+          } else {
+            return GameResults.P1Win;
+          }
+        } else if (revealP1 == paperHash) {
+          if (revealP2 == scissorsHash) {
+            return GameResults.P2Win;
+          } else {
+            return GameResults.P1Win;
+          }
+        } else if (revealP1 == scissorsHash) {
+          if (revealP2 == rockHash) {
+            return GameResults.P2Win;
+          } else {
+            return GameResults.P1Win;
+          }
+        }
+      } else {
+        if (revealP1 != 0) {
+          return GameResults.P1Win;
+        } else {
+          return GameResults.P2Win;
+        }
+      }
     }
-
-
-
-
-
-
-
 
 
 
