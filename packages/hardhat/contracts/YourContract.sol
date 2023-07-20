@@ -69,7 +69,8 @@ struct GameStruct {
   }
 
 
-  function joinGame(address gameHash) public validGameState(gameHash, GameState.JoinPhase) {
+  function joinGame(address gameHash) public
+    validGameState(gameHash, GameState.JoinPhase) {
     games[gameHash].gameState = GameState.CommitPhase;
     activeGame[msg.sender] = gameHash;
   }
@@ -113,9 +114,11 @@ struct GameStruct {
 
     if (games[gameHash].commit1 != 0 && games[gameHash].commit2 != 0) {
       games[gameHash].gameState = GameState.RevealPhase;
+      }
     }
 
-    function reveal(string memory salt) public validGameState(activeGame[msg.sender], GameState.RevealPhase) {
+    function reveal(string memory salt) public
+      validGameState(activeGame[msg.sender], GameState.RevealPhase) {
       address gameHash = activeGame[msg.sender];
       bool isPlayer1 = games[gameHash].player1 == msg.sender;
       if (isPlayer1) {
@@ -128,7 +131,7 @@ struct GameStruct {
       bytes32 verificationHashPaper = keccak256(abi.encodePacked("paper", salt));
       bytes32 verificationHashScissors = keccak256(abi.encodePacked("scissors", salt));
 
-      bytes32 commitHash = player1
+      bytes32 commitHash = isPlayer1
         ? games[gameHash].commit1
         : games[gameHash].commit2;
 
@@ -153,42 +156,35 @@ struct GameStruct {
       }
     }
 
-    function determineWinner(bytes32 revealP1, bytes32 revealP2) public view returns (GameResults) {
+    function determineWinner(bytes32 revealP1, bytes32 revealP2) public view returns (GameResult) {
       if (revealP1 != 0 || revealP2 != 0) {
         if (revealP1 == revealP2) {
-          return GameResults.Draw;
+          return GameResult.Draw;
         } else if (revealP1 == rockHash) {
           if (revealP2 == paperHash) {
-            return GameResults.P2Win;
+            return GameResult.P2Win;
           } else {
-            return GameResults.P1Win;
+            return GameResult.P1Win;
           }
         } else if (revealP1 == paperHash) {
           if (revealP2 == scissorsHash) {
-            return GameResults.P2Win;
+            return GameResult.P2Win;
           } else {
-            return GameResults.P1Win;
+            return GameResult.P1Win;
           }
         } else if (revealP1 == scissorsHash) {
           if (revealP2 == rockHash) {
-            return GameResults.P2Win;
+            return GameResult.P2Win;
           } else {
-            return GameResults.P1Win;
+            return GameResult.P1Win;
           }
         }
       } else {
         if (revealP1 != 0) {
-          return GameResults.P1Win;
+          return GameResult.P1Win;
         } else {
-          return GameResults.P2Win;
+          return GameResult.P2Win;
         }
       }
     }
-
-
-
-
-
-
-
 }
