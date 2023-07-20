@@ -5,7 +5,7 @@ const contracts = {
       name: "localhost",
       contracts: {
         YourContract: {
-          address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+          address: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
           abi: [
             {
               inputs: [
@@ -67,12 +67,12 @@ const contracts = {
               inputs: [
                 {
                   internalType: "bytes32",
-                  name: "revealP1",
+                  name: "reveal1",
                   type: "bytes32",
                 },
                 {
                   internalType: "bytes32",
-                  name: "revealP2",
+                  name: "reveal2",
                   type: "bytes32",
                 },
               ],
@@ -241,6 +241,13 @@ const contracts = {
                 },
               ],
               name: "joinGame",
+              outputs: [],
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "leave",
               outputs: [],
               stateMutability: "nonpayable",
               type: "function",

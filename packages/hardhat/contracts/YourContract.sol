@@ -164,35 +164,42 @@ struct GameStruct {
 
     }
 
-    function determineWinner(bytes32 revealP1, bytes32 revealP2) public view returns (GameResult) {
-      if (revealP1 != 0 || revealP2 != 0) {
-        if (revealP1 == revealP2) {
+    function determineWinner(bytes32 reveal1, bytes32 reveal2) public view returns (GameResult) {
+      if (reveal1 != 0 || reveal2 != 0) {
+        if (reveal1 == reveal2) {
           return GameResult.Draw;
-        } else if (revealP1 == rockHash) {
-          if (revealP2 == paperHash) {
+        } else if (reveal1 == rockHash) {
+          if (reveal2 == paperHash) {
             return GameResult.P2Win;
           } else {
             return GameResult.P1Win;
           }
-        } else if (revealP1 == paperHash) {
-          if (revealP2 == scissorsHash) {
+        } else if (reveal1 == paperHash) {
+          if (reveal2 == scissorsHash) {
             return GameResult.P2Win;
           } else {
             return GameResult.P1Win;
           }
-        } else if (revealP1 == scissorsHash) {
-          if (revealP2 == rockHash) {
+        } else if (reveal1 == scissorsHash) {
+          if (reveal2 == rockHash) {
             return GameResult.P2Win;
           } else {
             return GameResult.P1Win;
           }
         }
       } else {
-        if (revealP1 != 0) {
+        if (reveal1 != 0) {
           return GameResult.P1Win;
-        } else {
+        } else if (reveal2 != 0) {
           return GameResult.P2Win;
+        } else {
+          return GameResult.Draw;
         }
       }
     }
+
+    function leave() public {
+      activeGame[msg.sender] = address(0);
+    }
+
 }
