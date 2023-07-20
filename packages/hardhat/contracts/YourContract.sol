@@ -117,9 +117,48 @@ struct GameStruct {
 
     function revealString(string memory salt) public validGameState(activeGame[msg.sender], GameState.RevealPhase) {
       address gameHash = activeGame[msg.sender];
+      bool isPlayer1 = games[gameHash].player1 == msg.sender;
+      if (isPlayer1) {
+        require(gameHash[msg.sender].reveal1 == 0, "already revealed")
+      } else {
+        require(gameHash[msg.sender].reveal2 == 0, "already revealed")
+      }
+
+      bytes32 verificationHashRock = keccak256(abi.encodePacked("rock", salt));
+      bytes32 verificationHashPaper = keccak256(abi.encodePacked("paper", salt));
+      bytes32 verificationHashScissors = keccak256(abi.encodePacked("scissors", salt));
+
+      bytes32 commitHash = player1
+        ? games[gameHash].commit1
+        : games[gameHash].commit2;
+
+      require(commitHash == verificationHashRock ||
+             commitHash == verificationHashPaper ||
+             commitHash == verificationHashScissors,
+             "salt not the same");
+
+      string memory choice;
+      if (verificationHashRock == commitHash) {
+        choice = "rock";
+      } else if (verificationHashPaper == commitHash) {
+        choice = "paper";
+      } else {
+        choice = "scissors";
+      }
+
+      if (isPlayer1) {
+        games[gameHash].reveal1 = keccak256(abi.encodePacked(choice));
+      } else {
+        games[gameHash].reveal2 = keccak256(abi.encodePacked(choice));
+      }
     }
 
-  }
+    function determineWinner(bytes32 revealP1, bytes32 revealP2) public view returns (GameResults) {
+
+    }
+
+
+
 
 
 
