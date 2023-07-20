@@ -153,6 +153,15 @@ struct GameStruct {
       } else {
         games[gameHash].reveal2 = keccak256(abi.encodePacked(choice));
       }
+
+
+    if (games[gameHash].reveal1 != 0 && games[gameHash].reveal2 != 0) {
+      games[gameHash].gameResult = determineWinner(games[gameHash].reveal1, games[gameHash].reveal2);
+      games[gameHash].gameState = GameState.ResultsPhase;
+     } else {
+      games[gameHash].revealDeadline = block.timestamp + 3 minutes;
+     }
+
     }
 
     function determineWinner(bytes32 revealP1, bytes32 revealP2) public view returns (GameResult) {
