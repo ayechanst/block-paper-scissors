@@ -5,7 +5,7 @@ const contracts = {
       name: "localhost",
       contracts: {
         YourContract: {
-          address: "0x9E545E3C0baAB3E08CdfD552C960A1050f373042",
+          address: "0xa82fF9aFd8f496c3d6ac40E2a0F282E47488CFc9",
           abi: [
             {
               inputs: [
@@ -61,6 +61,30 @@ const contracts = {
                 },
               ],
               stateMutability: "nonpayable",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "bytes32",
+                  name: "revealP1",
+                  type: "bytes32",
+                },
+                {
+                  internalType: "bytes32",
+                  name: "revealP2",
+                  type: "bytes32",
+                },
+              ],
+              name: "determineWinner",
+              outputs: [
+                {
+                  internalType: "enum YourContract.GameResult",
+                  name: "",
+                  type: "uint8",
+                },
+              ],
+              stateMutability: "view",
               type: "function",
             },
             {
@@ -217,6 +241,19 @@ const contracts = {
                 },
               ],
               name: "joinGame",
+              outputs: [],
+              stateMutability: "nonpayable",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "string",
+                  name: "salt",
+                  type: "string",
+                },
+              ],
+              name: "reveal",
               outputs: [],
               stateMutability: "nonpayable",
               type: "function",

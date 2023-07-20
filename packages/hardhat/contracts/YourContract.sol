@@ -41,7 +41,9 @@ struct GameStruct {
   GameResult gameResult;
 }
 
-  address joinCode;
+    bytes32 rockHash = keccak256(abi.encodePacked('rock'));
+    bytes32 paperHash = keccak256(abi.encodePacked('paper'));
+    bytes32 scissorsHash = keccak256(abi.encodePacked('scissors'));
 
 // maps the Game address to the game's data
   mapping(address => GameStruct) public games;
@@ -96,9 +98,6 @@ struct GameStruct {
 
     address gameHash = activeGame[msg.sender];
     bytes32 unsaltedChoice = keccak256(abi.encodePacked(choice));
-    bytes32 rockHash = keccak256(abi.encodePacked('rock'));
-    bytes32 paperHash = keccak256(abi.encodePacked('paper'));
-    bytes32 scissorsHash = keccak256(abi.encodePacked('scissors'));
 
     require(unsaltedChoice == rockHash || unsaltedChoice == paperHash || unsaltedChoice == scissorsHash,
            "please select either rock, paper, or scissors");
@@ -122,9 +121,9 @@ struct GameStruct {
       address gameHash = activeGame[msg.sender];
       bool isPlayer1 = games[gameHash].player1 == msg.sender;
       if (isPlayer1) {
-        require(gameHash[msg.sender].reveal1 == 0, "already revealed");
+        require(games[msg.sender].reveal1 == 0, "already revealed");
       } else {
-        require(gameHash[msg.sender].reveal2 == 0, "already revealed");
+        require(games[msg.sender].reveal2 == 0, "already revealed");
       }
 
       bytes32 verificationHashRock = keccak256(abi.encodePacked("rock", salt));
