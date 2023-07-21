@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
@@ -7,6 +8,11 @@ export const CreateGame = () => {
   const [otherPlayer, setOtherPlayer] = useState("");
   const [gameHash, setGameHash] = useState(false);
   const { address } = useAccount();
+  const router = useRouter();
+
+  function handlePage() {
+    router.push("/game");
+  }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -54,6 +60,12 @@ export const CreateGame = () => {
             {" "}
             <div className="font-bold">Join Code</div>
             {gameStruct?.gameHash}
+            <button
+              onClick={handlePage}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+            >
+              Pull up to function
+            </button>
           </div>
         )}
       </div>

@@ -12,7 +12,7 @@ export const JoinGame = () => {
   }
 
   function handlePage() {
-    router.push("/game.tsx");
+    router.push("/game");
   }
 
   const { writeAsync } = useScaffoldContractWrite({
