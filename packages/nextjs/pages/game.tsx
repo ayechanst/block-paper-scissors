@@ -1,9 +1,10 @@
+import { GameData } from "../components/GameData";
 import type { NextPage } from "next";
 
 const Game: NextPage = () => {
   return (
     <>
-      <div>Showdown Time</div>
+      <GameData />
     </>
   );
 };
