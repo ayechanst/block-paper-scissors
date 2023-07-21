@@ -14,7 +14,7 @@ export const GameData = () => {
     <>
       <div className="container mx-auto">
         <div className="bg-blue-500 rounded-lg shadow-md p-4">
-          <div className="flex justify-center">
+          <div className="py-5 flex justify-center">
             <div className="font-bold px-1">Game Address: </div>
             <div> {gameStruct?.gameHash}</div>
           </div>
