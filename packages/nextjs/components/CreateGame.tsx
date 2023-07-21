@@ -20,15 +20,20 @@ export const CreateGame = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      drop the op location:
+      <div className="py-5">Drop da opps addy and bring yo pipe, sumn finna get boxed like some captn crunch:</div>
       <input
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         id="createGameInput"
         value={otherPlayer}
         onChange={e => setOtherPlayer(e.target.value)}
         type="string"
         required
       />
-      <button type="submit">Submit</button>
+      <div className="py-5">
+        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+          Submit
+        </button>
+      </div>
     </form>
   );
 };

@@ -22,7 +22,7 @@ export const CreateOrJoin = () => {
             <div className="py-5">
               <button
                 onClick={handleHostClick}
-                className="py-3 px-3 rounded-full outline outline-offset-7 outline-blue-500"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
               >
                 Host Game
               </button>
@@ -30,7 +30,7 @@ export const CreateOrJoin = () => {
             <div className="py-5">
               <button
                 onClick={handleJoinClick}
-                className="py-3 px-3 rounded-full outline outline-offset-7 outline-blue-500"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
               >
                 Join Game
               </button>
