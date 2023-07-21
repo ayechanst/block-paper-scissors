@@ -20,10 +20,9 @@ export const CreateGame = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      rat out opps addy:
+      drop the op location:
       <input
         id="createGameInput"
-        name="otherPlayer"
         value={otherPlayer}
         onChange={e => setOtherPlayer(e.target.value)}
         type="string"

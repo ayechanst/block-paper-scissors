@@ -1,5 +1,5 @@
 import React from "react";
-import { CreateGame } from "../components/createAndJoin";
+import { CreateOrJoin } from "../components/CreateOrJoin.tsx";
 
 export const Welcome = () => {
   return (
@@ -8,7 +8,7 @@ export const Welcome = () => {
         <div className="font-bold">Welcome to Block Paper Scissors!</div>
       </div>
       <div className="flex justify-center py-10">
-        <CreateGame />
+        <CreateOrJoin />
       </div>
     </>
   );
