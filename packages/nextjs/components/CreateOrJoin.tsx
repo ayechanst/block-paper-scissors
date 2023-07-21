@@ -19,8 +19,22 @@ export const CreateOrJoin = () => {
       <div>
         {!createGame && !joinGame && (
           <div>
-            <button onClick={handleHostClick}>Host Game</button>
-            <button onClick={handleJoinClick}>Join Game</button>
+            <div className="py-5">
+              <button
+                onClick={handleHostClick}
+                className="py-3 px-3 rounded-full outline outline-offset-7 outline-blue-500"
+              >
+                Host Game
+              </button>
+            </div>
+            <div className="py-5">
+              <button
+                onClick={handleJoinClick}
+                className="py-3 px-3 rounded-full outline outline-offset-7 outline-blue-500"
+              >
+                Join Game
+              </button>
+            </div>
           </div>
         )}
       </div>
