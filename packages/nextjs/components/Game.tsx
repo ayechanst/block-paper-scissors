@@ -1,9 +1,15 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 export const Game = () => {
   const [choice, setChoice] = useState("");
   const [salt, setSalt] = useState("");
+  const router = useRouter();
+
+  function handlePage() {
+    router.push("/reveal");
+  }
 
   function handleRock() {
     setChoice("rock");
@@ -63,7 +69,11 @@ export const Game = () => {
             required
           />
           <div className="py-5">
-            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+            <button
+              onClick={handlePage}
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+            >
               Submit
             </button>
           </div>
