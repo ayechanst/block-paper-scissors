@@ -11,7 +11,7 @@ export const CreateGame = () => {
   const router = useRouter();
 
   function handlePage() {
-    router.push("/game");
+    router.push("./game");
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -34,6 +34,7 @@ export const CreateGame = () => {
     functionName: "getActiveGameData",
     args: [address],
   });
+  const joinCode = gameStruct?.gameHash;
 
   return (
     <>
@@ -59,7 +60,16 @@ export const CreateGame = () => {
           <div className="py-5">
             {" "}
             <div className="font-bold">Join Code</div>
-            {gameStruct?.gameHash}
+            <div>
+              {joinCode}
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(String(joinCode));
+                }}
+              >
+                Copy
+              </button>
+            </div>
             <button
               onClick={handlePage}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
