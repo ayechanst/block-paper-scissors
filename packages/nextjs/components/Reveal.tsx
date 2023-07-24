@@ -59,7 +59,7 @@ export const Reveal = () => {
           </button>
         </div>
       </form>
-      revealResults && (<div>{gameResult}</div>)
+      {revealResults && <div>{gameResult}</div>}
     </>
   );
 };
