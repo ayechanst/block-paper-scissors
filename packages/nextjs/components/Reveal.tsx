@@ -27,7 +27,11 @@ export const Reveal = () => {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     writeAsync({ args: [salt] });
-    setRevealResults(!revealResults);
+    if (gameStruct?.reveal1 === null && gameStruct?.reveal2 === null) {
+      setTimeout(() => {
+        setRevealResults(!revealResults);
+      }, 5000);
+    }
   }
 
   const gameResultNumber = gameStruct?.gameResult;
@@ -44,22 +48,24 @@ export const Reveal = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <div className="py-5">Enter salt boi:</div>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="saltInput"
-          onChange={e => setSalt(e.target.value)}
-          type="string"
-          required
-        />
-        <div className="py-5">
-          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-            Submit
-          </button>
-        </div>
-      </form>
-      {revealResults && <div>{gameResult}</div>}
+      <div className="container mx-auto">
+        <form onSubmit={handleSubmit}>
+          <div className="py-5">Enter salt boi:</div>
+          <input
+            className="max-w-lg shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="saltInput"
+            onChange={e => setSalt(e.target.value)}
+            type="string"
+            required
+          />
+          <div className="py-5">
+            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+              Submit
+            </button>
+          </div>
+        </form>
+        {revealResults && <div>{gameResult}</div>}
+      </div>
     </>
   );
 };
