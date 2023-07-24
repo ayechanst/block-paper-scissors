@@ -27,7 +27,7 @@ export const Reveal = () => {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     writeAsync({ args: [salt] });
-    if (gameStruct?.reveal1 === null && gameStruct?.reveal2 === null) {
+    if (Boolean(gameStruct?.reveal1) === true && Boolean(gameStruct?.reveal2) === true) {
       setTimeout(() => {
         setRevealResults(!revealResults);
       }, 5000);
