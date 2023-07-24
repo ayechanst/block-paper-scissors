@@ -37,6 +37,8 @@ struct GameStruct {
   bytes32 commit2;
   bytes32 reveal1;
   bytes32 reveal2;
+  bool p1Revealed;
+  bool p2Revealed;
   uint256 revealDeadline;
   GameResult gameResult;
 }
@@ -44,6 +46,7 @@ struct GameStruct {
     bytes32 rockHash = keccak256(abi.encodePacked('rock'));
     bytes32 paperHash = keccak256(abi.encodePacked('paper'));
     bytes32 scissorsHash = keccak256(abi.encodePacked('scissors'));
+
 
 // maps the Game address to the game's data
   mapping(address => GameStruct) public games;

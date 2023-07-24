@@ -6,6 +6,8 @@ import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 export const Reveal = () => {
   const [salt, setSalt] = useState("");
   const [revealResults, setRevealResults] = useState(false);
+  const [p1Reveal, setp1Reveal] = useState(false);
+  const [p2Reveal, setp2Reveal] = useState(false);
   const { address } = useAccount();
   let gameResult = "";
 
@@ -27,7 +29,13 @@ export const Reveal = () => {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     writeAsync({ args: [salt] });
-    if (Boolean(gameStruct?.reveal1) === true && Boolean(gameStruct?.reveal2) === true) {
+    if (gameStruct?.reveal1 !== "0x") {
+      setp1Reveal(!p1Reveal);
+    }
+    if (gameStruct?.reveal2 !== "0x") {
+      setp2Reveal(!p2Reveal);
+    }
+    if (p1Reveal && p2Reveal) {
       setTimeout(() => {
         setRevealResults(!revealResults);
       }, 5000);
