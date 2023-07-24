@@ -39,7 +39,7 @@ export const CreateGame = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <div className="py-5">Drop da opps addy and bring yo pipe, sumn finna get boxed like some captn crunch:</div>
+        <div className="py-5">Input opponent address:</div>
         <input
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="createGameInput"
@@ -60,21 +60,22 @@ export const CreateGame = () => {
           <div className="py-5">
             {" "}
             <div className="font-bold">Join Code</div>
-            <div>
-              {joinCode}
+            <div className="flex">
+              <div className="px-3">{joinCode}</div>
               <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                 onClick={() => {
                   navigator.clipboard.writeText(String(joinCode));
                 }}
               >
-                Copy
+                Copy Join Code
               </button>
             </div>
             <button
               onClick={handlePage}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
             >
-              Pull up to function
+              continue
             </button>
           </div>
         )}

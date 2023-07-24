@@ -26,7 +26,7 @@ export const JoinGame = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="py-5">Opps dropped location, time to krueger wit da ruger:</div>
+      <div className="py-5">Enter join code to continue:</div>
       <input
         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         id="joinGameInput"
