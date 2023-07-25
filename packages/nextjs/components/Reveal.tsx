@@ -29,29 +29,35 @@ export const Reveal = () => {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     writeAsync({ args: [salt] });
-    if (gameStruct?.reveal1 !== "0x") {
-      setp1Reveal(!p1Reveal);
+    //useEffect(() => {
+    if (gameStruct?.p1Revealed === true) {
+      setp1Reveal(true);
     }
-    if (gameStruct?.reveal2 !== "0x") {
-      setp2Reveal(!p2Reveal);
+    if (gameStruct?.p2Revealed === true) {
+      setp2Reveal(true);
     }
+    //}, [gameStruct, p1Reveal, p2Reveal]);
+    //useEffect(() => {
     if (p1Reveal && p2Reveal) {
       setTimeout(() => {
-        setRevealResults(!revealResults);
+        setRevealResults(true);
       }, 5000);
     }
+    //}, [revealResults, p1Reveal, p2Reveal]);
   }
 
   const gameResultNumber = gameStruct?.gameResult;
 
   if (gameResultNumber === 0) {
-    gameResult = "Player 1 Won!";
+    gameResult = "Waiting on players";
   } else if (gameResultNumber === 1) {
-    gameResult = "Player 2 Won!";
+    gameResult = "Player 1 Won!";
   } else if (gameResultNumber === 2) {
-    gameResult = "A draw has happened";
+    gameResult = "Player 2 Won!";
+  } else if (gameResultNumber === 3) {
+    gameResult = "Draw";
   } else {
-    gameResult = "A critical failure occured instead of success";
+    gameResult = "There has been a critically massive error son";
   }
 
   return (
@@ -72,7 +78,8 @@ export const Reveal = () => {
             </button>
           </div>
         </form>
-        {revealResults && <div>{gameResult}</div>}
+        {/* {revealResults && <div>{gameResult}</div>} */}
+        {<div>{gameResult}</div>}
       </div>
     </>
   );

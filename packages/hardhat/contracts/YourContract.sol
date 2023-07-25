@@ -22,6 +22,7 @@ enum GameState {
 }
 
 enum GameResult {
+  Waiting,
   P1Win,
   P2Win,
   Draw
@@ -37,8 +38,7 @@ struct GameStruct {
   bytes32 commit2;
   bytes32 reveal1;
   bytes32 reveal2;
-  bool p1Revealed;
-  bool p2Revealed;
+  bool bothPlayersRevealed;
   uint256 revealDeadline;
   GameResult gameResult;
 }
@@ -157,7 +157,6 @@ struct GameStruct {
         games[gameHash].reveal2 = keccak256(abi.encodePacked(choice));
       }
 
-
     if (games[gameHash].reveal1 != 0 && games[gameHash].reveal2 != 0) {
       games[gameHash].gameResult = determineWinner(games[gameHash].reveal1, games[gameHash].reveal2);
       games[gameHash].gameState = GameState.ResultsPhase;
@@ -168,7 +167,7 @@ struct GameStruct {
     }
 
     function determineWinner(bytes32 reveal1, bytes32 reveal2) public view returns (GameResult) {
-      if (reveal1 != 0 || reveal2 != 0) {
+      if (reveal1 != 0 && reveal2 != 0) {
         if (reveal1 == reveal2) {
           return GameResult.Draw;
         } else if (reveal1 == rockHash) {
@@ -196,7 +195,7 @@ struct GameStruct {
         } else if (reveal2 != 0) {
           return GameResult.P2Win;
         } else {
-          return GameResult.Draw;
+          return GameResult.Waiting;
         }
       }
     }
