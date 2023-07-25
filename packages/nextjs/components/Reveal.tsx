@@ -5,8 +5,6 @@ import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
 export const Reveal = () => {
   const [salt, setSalt] = useState("");
-  const [p1Reveal, setp1Reveal] = useState(false);
-  const [p2Reveal, setp2Reveal] = useState(false);
   const { address } = useAccount();
   let gameResult = "";
 
