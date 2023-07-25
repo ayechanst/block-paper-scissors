@@ -1,5 +1,5 @@
 import React from "react";
-import { CreateOrJoin } from "../components/CreateOrJoin.tsx";
+import { CreateOrJoin } from "../components/CreateOrJoin.js";
 
 export const Welcome = () => {
   return (
