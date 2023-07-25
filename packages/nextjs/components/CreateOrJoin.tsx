@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { CreateGame } from "../components/CreateGame.js";
-import { JoinGame } from "../components/JoinGame.js";
+import { CreateGame } from "../components/CreateGame";
+import { JoinGame } from "../components/JoinGame";
 
 export const CreateOrJoin = () => {
   const [createGame, setCreateGame] = useState(false);
