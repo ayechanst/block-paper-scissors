@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import { ethers } from "ethers"
 
 export const Game = () => {
   const [choice, setChoice] = useState("");
   const [salt, setSalt] = useState("");
+  const [saltedChoice, setSaltedChoice] = useState("");
   const router = useRouter();
 
   function handlePage() {
@@ -23,14 +25,17 @@ export const Game = () => {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    writeAsync({ args: [choice, salt] });
+    const data = choice + salt;
+    const saltedAndHashedChoice = ethers.utils.keccak256(data);
+    setSaltedChoice(saltedAndHashedChoice);
+    writeAsync({ saltedChoice });
   }
 
   const { writeAsync } = useScaffoldContractWrite({
     contractName: "YourContract",
     functionName: "commit",
-    args: [choice, salt],
-    onBlockConfirmation: txnReceipt => {
+    args: [saltedChoice],
+      onBlockConfirmation: txnReceipt => {
       console.log("choice and salt written", txnReceipt.blockHash);
     },
   });

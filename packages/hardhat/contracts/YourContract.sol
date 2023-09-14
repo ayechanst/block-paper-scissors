@@ -91,16 +91,16 @@ struct GameStruct {
     return games[gameHash];
   }
 
-  function commit(string memory choice, string memory salt) public
+  function commit(string memory saltedChoice) public
     validGameState(activeGame[msg.sender], GameState.CommitPhase) {
 
     address gameHash = activeGame[msg.sender];
-    bytes32 unsaltedChoice = keccak256(abi.encodePacked(choice));
+    // bytes32 unsaltedChoice = keccak256(abi.encodePacked(choice));
 
-    require(unsaltedChoice == rockHash || unsaltedChoice == paperHash || unsaltedChoice == scissorsHash,
-           "please select either rock, paper, or scissors");
+    // require(unsaltedChoice == rockHash || unsaltedChoice == paperHash || unsaltedChoice == scissorsHash,
+    //        "please select either rock, paper, or scissors");
 
-    bytes32 commitHash = keccak256(abi.encodePacked(choice, salt));
+    bytes32 commitHash = keccak256(abi.encodePacked(saltedChoice));
     bool isPlayer1 = games[gameHash].player1 == msg.sender;
 
     if (isPlayer1) {
