@@ -28,7 +28,8 @@ export const Game = () => {
     const data = choice + salt;
     const saltedAndHashedChoice = ethers.utils.keccak256(data);
     setSaltedChoice(saltedAndHashedChoice);
-    writeAsync({ saltedChoice });
+    if (!saltedChoice) return;
+    writeAsync();
   }
 
   const { writeAsync } = useScaffoldContractWrite({
