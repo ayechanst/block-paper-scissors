@@ -138,6 +138,7 @@ struct GameStruct {
              "salt not the same");
 
       string memory choice;
+
       if (verificationHashRock == commitHash) {
         choice = "rock";
       } else if (verificationHashPaper == commitHash) {
