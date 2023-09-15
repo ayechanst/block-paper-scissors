@@ -9,6 +9,7 @@
     ]
   },
   "scripts": {
+    "ethers": "^5.0.0",
     "account": "yarn workspace @se-2/hardhat account",
     "chain": "yarn workspace @se-2/hardhat chain",
     "fork": "yarn workspace @se-2/hardhat fork",
